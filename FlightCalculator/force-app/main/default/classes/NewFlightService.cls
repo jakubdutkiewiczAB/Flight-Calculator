@@ -1,0 +1,53 @@
+/**
+ * Service class for NewFlight component
+ * 
+ * @author Jakub Dutkiewicz
+ * @created 04.10.2022
+ */
+public class NewFlightService {
+
+    /**
+     * Service method to fetch all available Airports
+     * 
+     * @author Jakub Dutkiewicz
+     * @created 04.10.2022
+     * 
+     * @return List of Airport sObjects
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<Airport__c> fetchAirports() {
+        return SEL_Airport.getAllAirports();
+    }
+
+    /**
+     * Service method to calculate and save Flight__c record 
+     * 
+     * @author Jakub Dutkiewicz
+     * @created 04.10.2022
+     * 
+     * @param List of Airport sObjects
+     * @return FlightBuilder constructor for Flight__c sObject
+     */
+    @AuraEnabled
+    public static FlightBuilder calculateAndSaveFlight(List<Airport__c> airports) {
+        try {
+            Flight__c newFlight = new Flight__c (
+                Departure__c = airports.get(0).Name,
+                Arrival__c = airports.get(1).Name,
+                FlightDistance__c = FlightService.calculateDistance(
+                    airports.get(0).Geolocation__Latitude__s,
+                    airports.get(0).Geolocation__Longitude__s,
+                    airports.get(1).Geolocation__Latitude__s,
+                    airports.get(1).Geolocation__Longitude__s
+                ),
+                Name = airports.get(0).IATA__c + '-' + airports.get(1).IATA__c
+            );
+            insert newFlight;
+            
+            FlightBuilder flight = new FlightBuilder();
+            return flight.cloneFlight(newFlight).setNamesOnFlight(airports.get(0).Name, airports.get(1).Name).getRecord();
+        } catch(DmlException ex) {
+            throw new AuraHandledException(System.Label.UnexpectedError + ' ' + ex.getMessage());
+        }
+    }
+}

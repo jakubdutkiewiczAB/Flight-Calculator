@@ -1,0 +1,44 @@
+<template>
+    <div class="flight-creation-container">
+        <div class="flight-creation-form-container">
+            <template if:true={airportOptions}>
+                <lightning-combobox
+                    name="departureAirport"
+                    label="Departure Airport"
+                    value={airportDepartureValue}
+                    placeholder="Departure Airport"
+                    options={airportOptions}
+                    onchange={handleChange}
+                    required>
+                </lightning-combobox>
+                <lightning-combobox
+                    name="arrivalAirport"
+                    label="Arrival Airport"
+                    value={airportArrivalValue}
+                    placeholder="Arrival Airport"
+                    options={airportOptions}
+                    onchange={handleChange}
+                    required>
+                </lightning-combobox>
+            </template>
+            <div class="spacer"></div>
+            <lightning-button 
+                label="Create a flight" 
+                title="Create a flight" 
+                onclick={handleFlightCreation} 
+                class="slds-m-left_x-small">
+            </lightning-button>
+        </div>
+        <template if:true={showResult}>
+            <div class="slds-p-top_medium">
+               {label.createdFlight}: {flightName}
+               <div class="spacer"></div>
+               {label.departureAirport}: {departureAirport}
+               <div class="spacer"></div>
+               {label.arrivalAirport}: {arrivalAirport}
+               <div class="spacer"></div>
+               {label.flightDistance}: {flightDistance}km
+            </div>
+        </template>
+    </div>
+</template>
