@@ -1,0 +1,13 @@
+.flight-creation-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.flight-creation-form-container {
+    width: 50%;
+}
+
+.spacer {
+    height: 10px;
+}
