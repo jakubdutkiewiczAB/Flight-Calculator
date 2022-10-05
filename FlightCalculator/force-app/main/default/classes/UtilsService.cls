@@ -4,7 +4,7 @@
  * @author Jakub Dutkiewicz
  * @created 04.10.2022
  */
-public class UtilsService {
+public with sharing class UtilsService {
 
     /**
      * Service method to check if field is changed

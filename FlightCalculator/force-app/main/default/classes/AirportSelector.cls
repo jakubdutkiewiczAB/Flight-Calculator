@@ -49,10 +49,10 @@ global inherited sharing class AirportSelector {
      * @param Set of Airport__c sObjects ids
      * @return Map of Ids and Airport__c sObjects
      */
-    global static Map<Id, Airport__c> getAirportsByIds(Set<Id> ids) {
+    global static Map<Id, Airport__c> getAirportsByIds(Set<Id> airportIds) {
         String query = 'SELECT ' + String.join(getAirportFields(), ',') +
             ' FROM Airport__c ' +
-            ' WHERE Id IN :ids ';
+            ' WHERE Id IN :airportIds ';
         return new Map<Id, Airport__c>((List<Airport__c>) Database.query(String.escapeSingleQuotes(query)));
     }
 }

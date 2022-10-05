@@ -16,7 +16,7 @@ public class NewFlightService {
      */
     @AuraEnabled(cacheable=true)
     public static List<Airport__c> fetchAirports() {
-        return SEL_Airport.getAllAirports();
+        return AirportSelector.getAllAirports();
     }
 
     /**
@@ -32,8 +32,8 @@ public class NewFlightService {
     public static FlightBuilder calculateAndSaveFlight(List<Airport__c> airports) {
         try {
             Flight__c newFlight = new Flight__c (
-                Departure__c = airports.get(0).Name,
-                Arrival__c = airports.get(1).Name,
+                DepartureAirport__c = airports.get(0).Id,
+                ArrivalAirport__c = airports.get(1).Id,
                 FlightDistance__c = FlightService.calculateDistance(
                     airports.get(0).Geolocation__Latitude__s,
                     airports.get(0).Geolocation__Longitude__s,

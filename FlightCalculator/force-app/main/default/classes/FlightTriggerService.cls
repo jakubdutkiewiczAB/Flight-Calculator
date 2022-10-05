@@ -4,7 +4,8 @@
  * @author Jakub Dutkiewicz
  * @created 04.10.2022
  */
-public class FlightTriggerService extends FlightTriggerHandler{
+public with sharing class FlightTriggerService extends FlightTriggerHandler{
+    
     private FlightTriggerService() {}
 
     public static FlightTriggerService instance {
