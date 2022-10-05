@@ -24,7 +24,7 @@ export default class NewFlight extends LightningElement {
             });
             this.airportOptions = [...airportData];
         } else if (!data) {
-            this.showToast(this.label.missingData, 'warning');
+            this.showToast(this.label.somethingIsMissing, 'warning');
         } else if (error) {
             this.showToast(this.label.unexpectedErrorLabel, 'error');
         }
@@ -40,7 +40,7 @@ export default class NewFlight extends LightningElement {
 
     handleFlightCreation() {
         if (this.airportDepartureValue && this.airportArrivalValue && this.airportDepartureValue === this.airportArrivalValue) {
-            this.showToast(this.label.makeSureBeforeSave, 'error');
+            this.showToast(this.label.airportsCannotBeTheSame, 'error');
         } else if (this.validateInputs()) {
             calculateAndSaveFlight({airports: this.fetchAirportData()})
                 .then((result) => {
