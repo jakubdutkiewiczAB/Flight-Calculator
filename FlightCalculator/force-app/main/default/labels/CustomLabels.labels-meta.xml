@@ -8,13 +8,6 @@
         <value>Arrival Airport</value>
     </labels>
     <labels>
-        <fullName>CreatedFlight</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>CreatedFlight</shortDescription>
-        <value>Created flight</value>
-    </labels>
-    <labels>
         <fullName>DepartureAirport</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -29,18 +22,11 @@
         <value>Flight Distance</value>
     </labels>
     <labels>
-        <fullName>MakeSureBeforeSave</fullName>
+        <fullName>CreatedFlight</fullName>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>MakeSureBeforeSave</shortDescription>
-        <value>Before saving make sure that Departure and Arrival destinations are not the same.</value>
-    </labels>
-    <labels>
-        <fullName>MissingData</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>MissingData</shortDescription>
-        <value>There is missing data.</value>
+        <shortDescription>CreatedFlight</shortDescription>
+        <value>Created flight</value>
     </labels>
     <labels>
         <fullName>UnexpectedError</fullName>
@@ -48,5 +34,19 @@
         <protected>true</protected>
         <shortDescription>UnexpectedError</shortDescription>
         <value>Unexpected error</value>
+    </labels>
+    <labels>
+        <fullName>AirportsCannotBeTheSame</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AirportsCannotBeTheSame</shortDescription>
+        <value>Departure and Arrival airports cannot be the same.</value>
+    </labels>
+    <labels>
+        <fullName>SomethingIsMissing</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SomethingIsMissing</shortDescription>
+        <value>Something is missing.</value>
     </labels>
 </CustomLabels>
