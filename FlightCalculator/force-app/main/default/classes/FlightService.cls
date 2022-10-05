@@ -4,11 +4,11 @@
  * @author Jakub Dutkiewicz
  * @created 04.10.2022
  */
-public class FlightService {
+public with sharing class FlightService {
 
     private static final Set<String> fieldToCheck = new Set<String>{
-        'Departure__c', 
-        'Arrival__c'
+        'DepartureAirport__c', 
+        'ArrivalAirport__c'
     };
 
     /**
@@ -26,25 +26,23 @@ public class FlightService {
             Set<Id> airportIds = new Set<Id>();
             for (Flight__c flight : flights) {
                 if (UtilsService.isFieldChanged(flight, oldFlightIdToFlight, fieldToCheck)) {
-                    airportIds.add(flight.Arrival__c);
-                    airportIds.add(flight.Departure__c);
+                    airportIds.add(flight.ArrivalAirport__c);
+                    airportIds.add(flight.DepartureAirport__c);
                     changedFlights.add(flight);
                 }
             }
 
-            Map<Id, Airport__c> idOfAirport = SEL_Airport.getAirportsByIds(airportIds);
+            Map<Id, Airport__c> airportsMap = AirportSelector.getAirportsByIds(airportIds);
 
             for (Flight__c flight : changedFlights) {
-                if (idOfAirport.containsKey(flight.Arrival__c) && idOfAirport.containsKey(flight.Departure__c)) {
+                if (airportsMap.containsKey(flight.ArrivalAirport__c) && airportsMap.containsKey(flight.DepartureAirport__c)) {
                     flight.FlightDistance__c = calculateDistance(
-                        idOfAirport.get(flight.Departure__c).Geolocation__Latitude__s,
-                        idOfAirport.get(flight.Departure__c).Geolocation__Longitude__s,
-                        idOfAirport.get(flight.Arrival__c).Geolocation__Latitude__s,
-                        idOfAirport.get(flight.Arrival__c).Geolocation__Longitude__s
+                        airportsMap.get(flight.ArrivalAirport__c).Geolocation__Latitude__s,
+                        airportsMap.get(flight.ArrivalAirport__c).Geolocation__Longitude__s,
+                        airportsMap.get(flight.DepartureAirport__c).Geolocation__Latitude__s,
+                        airportsMap.get(flight.DepartureAirport__c).Geolocation__Longitude__s
                     );
-                    flight.Name = idOfAirport.get(flight.Departure__c).IATA__c + 
-                        '-' + 
-                        idOfAirport.get(flight.Arrival__c).IATA__c;
+                    flight.Name = airportsMap.get(flight.ArrivalAirport__c).IATA__c + '-' + airportsMap.get(flight.DepartureAirport__c).IATA__c;
                 }
             }
         } catch(Exception ex) {
