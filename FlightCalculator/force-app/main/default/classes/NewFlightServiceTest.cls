@@ -3,7 +3,7 @@ public with sharing class NewFlightServiceTest {
    
     @TestSetup
     static void setupData() {
-        TestUtils.addAirports();
+        TestUtils.addAirports(true);
     }
     
     @isTest

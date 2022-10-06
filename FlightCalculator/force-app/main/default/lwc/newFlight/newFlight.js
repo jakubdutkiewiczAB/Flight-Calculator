@@ -1,8 +1,11 @@
-import { LightningElement, track, wire } from 'lwc';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import {LightningElement, track, wire} from 'lwc';
+import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import calculateAndSaveFlight from '@salesforce/apex/NewFlightService.calculateAndSaveFlight';
 import fetchAirports from '@salesforce/apex/NewFlightService.fetchAirports';
-import { labels } from 'c/labelUtils';
+import getAllAirports from '@salesforce/apex/NewFlightService.getAllAirports';
+import {labels} from 'c/labelUtils';
+
+const columns = [{label: 'IATA', fieldName: 'IATA__c'}];
 
 export default class NewFlight extends LightningElement {
     @track createdFlight;
@@ -13,6 +16,11 @@ export default class NewFlight extends LightningElement {
 
     airportDepartureValue;
     airportArrivalValue;
+    searchValue;
+    displayDepartureResult;
+    displayArrivalResult;
+    displayResult;
+    columns = columns;
 
     @wire(fetchAirports)
     wiredAirports({error, data}) {
@@ -24,33 +32,65 @@ export default class NewFlight extends LightningElement {
             });
             this.airportOptions = [...airportData];
         } else if (!data) {
-            this.showToast(this.label.somethingIsMissing, 'warning');
+            this.showToast(this.label.missingData, 'warning');
         } else if (error) {
             this.showToast(this.label.unexpectedErrorLabel, 'error');
         }
     }
 
-    handleChange(event) {
+    handleKeyChange(event){
+        this.searchValue = event.target.value;
+        this.imperativeCall(event.target.name);
+    }
+
+    imperativeCall(name){
+        getAllAirports({searchKey : this.searchValue})
+        .then((result) => {
+            if(name == "departureAirport"){
+                this.displayDepartureResult = result;
+            } else if(name == "arrivalAirport"){
+                this.displayArrivalResult = result;
+            }
+        })
+        .catch((error) => {
+            console.log('Error occured in Search JS: ', error);
+        });
+    }
+
+    handleRowSelection(event){
+        const selectionRow = event.detail.selectedRows;
         if (event.target.name == "departureAirport") {
-            this.airportDepartureValue = event.target.value;
+            this.airportDepartureValue = selectionRow;
         } else if (event.target.name == "arrivalAirport") {
-            this.airportArrivalValue = event.target.value;
+            this.airportArrivalValue = selectionRow;
         }
     }
 
     handleFlightCreation() {
-        if (this.airportDepartureValue && this.airportArrivalValue && this.airportDepartureValue === this.airportArrivalValue) {
+        if (this.airportDepartureValue === undefined || this.airportArrivalValue === undefined) {
+            this.showToast(this.label.somethingIsMissing, 'error');
+        } else if(this.airportDepartureValue[0].Id === this.airportArrivalValue[0].Id){
             this.showToast(this.label.airportsCannotBeTheSame, 'error');
+        } else if(this.airportDepartureValue[1] || this.airportArrivalValue[1] ){
+            this.showToast(this.label.chooseOnlyOneAirport, 'error');
         } else if (this.validateInputs()) {
             calculateAndSaveFlight({airports: this.fetchAirportData()})
-                .then((result) => {
-                    this.createdFlight = result;
-                }).catch((error) => {
-                    this.showToast(error.body.message, 'error');
-                });
+            .then((result) => {
+                this.createdFlight = result;
+                this.refresh();
+            }).catch((error) => {
+                this.showToast(error.body.message, 'error');
+            });
         }
     }
     
+    refresh() {
+        this.airportDepartureValue = undefined;
+        this.airportArrivalValue = undefined;
+        this.displayDepartureResult = undefined;
+        this.displayArrivalResult = undefined;
+    }
+
     validateInputs() {
         let isValid = true;
         this.template.querySelectorAll('lightning-combobox').forEach((field) => {
@@ -63,8 +103,8 @@ export default class NewFlight extends LightningElement {
 
     fetchAirportData() {
         let arr = [];
-        arr.push(this.airportAllData.find(el => el.Id == this.airportDepartureValue));
-        arr.push(this.airportAllData.find(el => el.Id == this.airportArrivalValue));
+        arr.push(this.airportAllData.find(el => el.Id == this.airportDepartureValue[0].Id));
+        arr.push(this.airportAllData.find(el => el.Id == this.airportArrivalValue[0].Id));
         return arr;
     }
 

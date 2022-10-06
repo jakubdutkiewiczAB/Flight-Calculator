@@ -5,6 +5,7 @@ import createdFlight from '@salesforce/label/c.CreatedFlight';
 import unexpectedError from '@salesforce/label/c.UnexpectedError';
 import airportsCannotBeTheSame from '@salesforce/label/c.AirportsCannotBeTheSame';
 import somethingIsMissing from '@salesforce/label/c.SomethingIsMissing';
+import chooseOnlyOneAirport from '@salesforce/label/c.ChooseOnlyOneAirport';
 
 const labels = {
     arrivalAirport,
@@ -13,7 +14,8 @@ const labels = {
     createdFlight,
     unexpectedError,
     airportsCannotBeTheSame,
-    somethingIsMissing
+    somethingIsMissing,
+    chooseOnlyOneAirport
 }
 
 export {labels};
