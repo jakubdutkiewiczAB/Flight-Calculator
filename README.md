@@ -6,6 +6,6 @@ distance and save the flight in the database.
 Deploy instructions:
 1. Clone repository from: https://github.com/jakubdutkiewiczAB/Flight-Calculator.git
 2. Deploy repository to your org.
-3. From Home Page on your org click Edit Page on gear icon (upper right corner).
+3. From Home Page (Service or Sales) on your org click Edit Page on gear icon (upper right corner).
 4. From Pages picklist values choose 'Flight Calculator', click Activate and Save.
 5. Go back to home page.
