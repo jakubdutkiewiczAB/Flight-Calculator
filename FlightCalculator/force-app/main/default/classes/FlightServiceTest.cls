@@ -3,13 +3,13 @@ public with sharing class FlightServiceTest {
     
     @TestSetup
     static void setupData() {
-        TestUtils.addFlight();
+        TestUtils.addFlight(true);
     }
     
     @isTest
     public static void calculateFlightTest() {
-        List<Flight__c> flightList = [SELECT Id, Name, DepartureAirport__c, ArrivalAirport__c, FlightDistance__c FROM Flight__c];
-        List<Airport__c> airportsList = [SELECT Id FROM Airport__c];
+        List<Flight__c> flightList = FlightSelector.getAllFlights();
+        List<Airport__c> airportsList = AirportSelector.getAllAirports();
         Map<Id, Flight__c> oldFlightIdToFlight = new Map<Id, Flight__c>();
 
         Decimal startDistance = flightList[0].FlightDistance__c;
@@ -21,7 +21,7 @@ public with sharing class FlightServiceTest {
         FlightService.calculateFlights(flightList, oldFlightIdToFlight);
         Test.stopTest();
 
-        List<Flight__c> flightListAfterUpdate = [SELECT Id, Name, DepartureAirport__c, ArrivalAirport__c, FlightDistance__c FROM Flight__c];
+        List<Flight__c> flightListAfterUpdate = FlightSelector.getAllFlights();
         Decimal finalDistance = flightListAfterUpdate[0].FlightDistance__c;
 
         System.assertNotEquals(finalDistance, startDistance);

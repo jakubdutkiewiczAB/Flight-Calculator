@@ -50,4 +50,23 @@ public class NewFlightService {
             throw new AuraHandledException(System.Label.UnexpectedError + ' ' + ex.getMessage());
         }
     }
+
+    /**
+     * Service method to find Airport__c sObjects by search key
+     * 
+     * @author Jakub Dutkiewicz
+     * @created 05.10.2022
+     * 
+     * @param searchKey to find IATA__c code in database
+     * @return List of Airport__c by search key
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<Airport__c> getAllAirports(String searchKey){
+        try {
+            String searchWord = '%'+searchKey+'%';
+            return [SELECT Id, IATA__c FROM Airport__c WHERE IATA__c like:searchWord];
+        } catch (Exception ex) {
+            throw new AuraHandledException(ex.getMessage());
+        }
+    }
 }

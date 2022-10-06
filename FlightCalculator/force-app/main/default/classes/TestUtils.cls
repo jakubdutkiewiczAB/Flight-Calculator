@@ -1,6 +1,6 @@
 public with sharing class TestUtils {
     
-    public static List<Airport__c> addAirports() {
+    public static List<Airport__c> addAirports(Boolean insertToDatabase) {
         Airport__c airportKatowice = new Airport__c(
             IATA__c = 'KTW',
             Geolocation__Latitude__s = 50.270908,
@@ -22,13 +22,15 @@ public with sharing class TestUtils {
             Name = 'New York'
         );
         List<Airport__c> airports = new List<Airport__c>{airportKatowice, airportBarcelona, airportNewYork};
-        insert airports;
-        
+
+        if(insertToDatabase){
+            insert airports;
+        }
         return airports;
     }
 
-    public static Flight__c addFlight() {
-        TestUtils.addAirports();
+    public static Flight__c addFlight(Boolean insertToDatabase) {
+        TestUtils.addAirports(true);
         List<Airport__c> airportsList = [SELECT Id FROM Airport__c];
         Flight__c newFlight = new Flight__c(
             Name = 'KTW-BCN',
@@ -36,7 +38,9 @@ public with sharing class TestUtils {
             ArrivalAirport__c = airportsList[1].Id
         );
 
-        insert newFlight;
+        if(insertToDatabase){
+            insert newFlight; 
+        }
         return newFlight;
     }
 }

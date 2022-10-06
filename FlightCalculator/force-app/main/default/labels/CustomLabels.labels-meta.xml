@@ -47,6 +47,13 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>SomethingIsMissing</shortDescription>
-        <value>Something is missing.</value>
+        <value>Something is missing. Please select an airport.</value>
+    </labels>
+    <labels>
+        <fullName>ChooseOnlyOneAirport</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ChooseOnlyOneAirport</shortDescription>
+        <value>You can choose only one Departure and Arrival airport.</value>
     </labels>
 </CustomLabels>

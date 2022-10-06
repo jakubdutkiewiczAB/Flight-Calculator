@@ -1,26 +1,56 @@
 <template>
     <div class="flight-creation-container">
         <div class="flight-creation-form-container">
-            <template if:true={airportOptions}>
-                <lightning-combobox
-                    name="departureAirport"
-                    label="Departure Airport"
-                    value={airportDepartureValue}
-                    placeholder="Departure Airport"
-                    options={airportOptions}
-                    onchange={handleChange}
-                    required>
-                </lightning-combobox>
-                <lightning-combobox
-                    name="arrivalAirport"
-                    label="Arrival Airport"
-                    value={airportArrivalValue}
-                    placeholder="Arrival Airport"
-                    options={airportOptions}
-                    onchange={handleChange}
-                    required>
-                </lightning-combobox>
-            </template>
+            <div class="slds-form-element">
+                <lightning-card class="slds-m-around_medium">
+                    <h3 slot="title">
+                        <lightning-icon icon-name="standard:account" size="small"></lightning-icon> Search Departure Airport           
+                    </h3>
+                    <p class="slds-p-horizontal_small">
+                        <lightning-input
+                            type="search"
+                            name="departureAirport"
+                            placeholder="Enter Departure Airport"
+                            class="slds-m-bottom_small" 
+                            label="Search Airport IATA" 
+                            onchange={handleKeyChange} 
+                            value={airportName}>
+                        </lightning-input>
+                    </p>
+                    <lightning-datatable 
+                        name="departureAirport"
+                        key-field="id"
+                        data={displayDepartureResult}
+                        columns={columns}
+                        onrowselection={handleRowSelection}>
+                    </lightning-datatable>
+                </lightning-card>
+            </div>
+            <div class="slds-form-element">
+                <lightning-card class="slds-m-around_medium">
+                    <h3 slot="title">
+                        <lightning-icon icon-name="standard:account" size="small"></lightning-icon> Search Arrival Airport           
+                    </h3>
+                    <p class="slds-p-horizontal_small">
+                        <lightning-input  
+                            type="search"
+                            name="arrivalAirport"
+                            placeholder="Enter Arrival Airport"
+                            class="slds-m-bottom_small" 
+                            label="Search Airport IATA" 
+                            onchange={handleKeyChange} 
+                            value={airportName}>
+                        </lightning-input>
+                    </p>
+                    <lightning-datatable 
+                        name="arrivalAirport"
+                        key-field="id"
+                        data={displayArrivalResult}
+                        columns={columns}
+                        onrowselection={handleRowSelection}>
+                    </lightning-datatable>
+                </lightning-card>
+            </div>
             <div class="spacer"></div>
             <lightning-button 
                 label="Create a flight" 
@@ -37,7 +67,7 @@
                <div class="spacer"></div>
                {label.arrivalAirport}: {arrivalAirport}
                <div class="spacer"></div>
-               {label.flightDistance}: {flightDistance} km
+               {label.flightDistance}: {flightDistance}km
             </div>
         </template>
     </div>
